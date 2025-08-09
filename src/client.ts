@@ -244,7 +244,7 @@ export class Client {
   }
 
   public async declareSuperStreamConsumer(
-    { superStream, offset, consumerRef, creditPolicy }: DeclareSuperStreamConsumerParams,
+    { superStream, offset, consumerRef, creditPolicy, filter }: DeclareSuperStreamConsumerParams,
     handle: ConsumerFunc
   ): Promise<SuperStreamConsumer> {
     const partitions = await this.queryPartitions({ superStream })
@@ -255,12 +255,14 @@ export class Client {
       offset: offset || Offset.first(),
       partitions,
       creditPolicy,
+      filter
     })
   }
 
   public async declareSuperStreamPublisher(
     { superStream, publisherRef, routingStrategy }: DeclareSuperStreamPublisherParams,
-    keyExtractor: MessageKeyExtractorFunction
+    keyExtractor: MessageKeyExtractorFunction,
+    filter?: FilterFunc
   ): Promise<SuperStreamPublisher> {
     return SuperStreamPublisher.create({
       locator: this,
@@ -268,6 +270,7 @@ export class Client {
       keyExtractor,
       publisherRef,
       routingStrategy,
+      filter
     })
   }
 
@@ -816,6 +819,7 @@ export interface DeclareSuperStreamConsumerParams {
   consumerRef?: string
   offset?: Offset
   creditPolicy?: ConsumerCreditPolicy
+  filter?: ConsumerFilter
 }
 
 export interface SubscribeParams {
