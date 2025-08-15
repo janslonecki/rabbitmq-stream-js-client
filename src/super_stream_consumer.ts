@@ -1,5 +1,5 @@
 import { Client, ConsumerFilter } from "./client"
-import { Consumer, ConsumerFunc } from "./consumer"
+import { Consumer, ConsumerFunc, ConsumerUpdateListener } from "./consumer"
 import { ConsumerCreditPolicy, defaultCreditPolicy } from "./consumer_credit_policy"
 import { Offset } from "./requests/subscribe_request"
 
@@ -11,6 +11,7 @@ export class SuperStreamConsumer {
   private partitions: string[]
   private offset: Offset
   private creditPolicy: ConsumerCreditPolicy
+  private consumerUpdateListener: ConsumerUpdateListener | undefined
   private filter: ConsumerFilter | undefined
 
   private constructor(
@@ -21,7 +22,8 @@ export class SuperStreamConsumer {
       partitions: string[]
       consumerRef: string
       offset: Offset
-      creditPolicy?: ConsumerCreditPolicy,
+      creditPolicy?: ConsumerCreditPolicy
+      consumerUpdateListener?: ConsumerUpdateListener
       filter?: ConsumerFilter
     }
   ) {
@@ -30,6 +32,7 @@ export class SuperStreamConsumer {
     this.locator = params.locator
     this.partitions = params.partitions
     this.offset = params.offset
+    this.consumerUpdateListener = params.consumerUpdateListener
     this.creditPolicy = params.creditPolicy || defaultCreditPolicy
     this.filter = params.filter
   }
@@ -44,6 +47,7 @@ export class SuperStreamConsumer {
             offset: this.offset,
             filter: this.filter,
             singleActive: true,
+            consumerUpdateListener: this.consumerUpdateListener,
             creditPolicy: this.creditPolicy,
           },
           this.handle,
@@ -63,10 +67,12 @@ export class SuperStreamConsumer {
       partitions: string[]
       consumerRef: string
       offset: Offset
-      creditPolicy?: ConsumerCreditPolicy,
+      creditPolicy?: ConsumerCreditPolicy
+      consumerUpdateListener?: ConsumerUpdateListener
       filter?: ConsumerFilter
     }
   ): Promise<SuperStreamConsumer> {
+    console.log("Creating SuperStreamConsumer for super stream")
     const superStreamConsumer = new SuperStreamConsumer(handle, params)
     await superStreamConsumer.start()
     return superStreamConsumer

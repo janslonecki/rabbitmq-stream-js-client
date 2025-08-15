@@ -1,6 +1,6 @@
 {
-  "name": "rabbitmq-stream-js-client",
-  "version": "0.6.2",
+  "name": "@janslonecki/rabbitmq-stream-js-client",
+  "version": "0.6.2-12",
   "description": "Rabbit stream client for JS/TS application",
   "main": "dist/index.js",
   "scripts": {
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/coders51/rabbitmq-stream-js-client.git"
+    "url": "git+https://github.com/janslonecki/rabbitmq-stream-js-client.git"
   },
   "keywords": [
     "RabbitMQ",

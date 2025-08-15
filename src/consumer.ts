@@ -6,7 +6,7 @@ import { Message } from "./publisher"
 import { Offset } from "./requests/subscribe_request"
 
 export type ConsumerFunc = (message: Message) => Promise<void> | void
-export type ConsumerUpdateListener = (consumerRef: string, streamName: string) => Promise<Offset>
+export type ConsumerUpdateListener = (consumer: StreamConsumer) => Promise<Offset>
 export const computeExtendedConsumerId = (consumerId: number, connectionId: string) => {
   return `${consumerId}@${connectionId}`
 }

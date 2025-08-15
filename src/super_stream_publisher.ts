@@ -11,7 +11,7 @@ type SuperStreamPublisherParams = {
   superStream: string
   publisherRef?: string
   routingStrategy?: RoutingStrategy
-  keyExtractor: MessageKeyExtractorFunction,
+  keyExtractor: MessageKeyExtractorFunction
   filter?: FilterFunc
 }
 
@@ -44,6 +44,7 @@ export class SuperStreamPublisher {
 
   public async start(): Promise<void> {
     this.partitions = await this.locator.queryPartitions({ superStream: this.superStream })
+    await Promise.all(this.partitions.map((p) => this.getPublisher(p)))
   }
 
   public async close(): Promise<void> {
