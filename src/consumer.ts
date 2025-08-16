@@ -4,9 +4,10 @@ import { ConnectionPool } from "./connection_pool"
 import { ConsumerCreditPolicy, defaultCreditPolicy } from "./consumer_credit_policy"
 import { Message } from "./publisher"
 import { Offset } from "./requests/subscribe_request"
+import { ConsumerUpdateQuery } from "./responses/consumer_update_query"
 
 export type ConsumerFunc = (message: Message) => Promise<void> | void
-export type ConsumerUpdateListener = (consumer: StreamConsumer) => Promise<Offset>
+export type ConsumerUpdateListener = (consumer: StreamConsumer, response?: ConsumerUpdateQuery) => Promise<Offset>
 export const computeExtendedConsumerId = (consumerId: number, connectionId: string) => {
   return `${consumerId}@${connectionId}`
 }

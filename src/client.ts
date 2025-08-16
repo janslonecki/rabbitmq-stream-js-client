@@ -595,7 +595,7 @@ export class Client {
         this.logger.error(`On consumer_update_query no consumer found`)
         return
       }
-      const offset = await this.getConsumerOrServerSavedOffset(consumer)
+      const offset = await this.getConsumerOrServerSavedOffset(consumer, response)
       consumer.updateConsumerOffset(offset)
       this.logger.debug(`on consumer_update_query -> ${consumer.consumerRef}`)
       await connection.send(
@@ -604,10 +604,13 @@ export class Client {
     }
   }
 
-  private async getConsumerOrServerSavedOffset(consumer: StreamConsumer) {
+  private async getConsumerOrServerSavedOffset(
+    consumer: StreamConsumer,
+    response?: ConsumerUpdateQuery
+  ): Promise<Offset> {
     if (consumer.isSingleActive && consumer.consumerRef && consumer.consumerUpdateListener) {
       try {
-        const offset = await consumer.consumerUpdateListener(consumer)
+        const offset = await consumer.consumerUpdateListener(consumer, response)
         return offset
       } catch (error) {
         this.logger.error(
