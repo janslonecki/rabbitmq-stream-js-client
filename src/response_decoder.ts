@@ -384,6 +384,7 @@ export function readUTF8String(dataResponse: DataReader) {
 
 export function decodeBooleanType(dataResponse: DataReader, boolType: number) {
   switch (boolType) {
+    case FormatCode.BoolByte:
     case FormatCode.Bool:
       const boolValue = dataResponse.readInt8()
       return boolValue !== 0
@@ -441,6 +442,7 @@ export function decodeFormatCode(dataResponse: DataReader, formatCode: number) {
     case FormatCode.Int:
       return dataResponse.readInt32()
     case FormatCode.Bool:
+    case FormatCode.BoolByte:
     case FormatCode.BoolTrue:
     case FormatCode.BoolFalse:
       return decodeBooleanType(dataResponse, formatCode)

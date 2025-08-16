@@ -33,6 +33,7 @@ export const FormatCode = {
   SmallInt: 0x54,
   Timestamp: 0x83,
   Bool: 0x56,
+  BoolByte: 0x55,
   BoolTrue: 0x41,
   BoolFalse: 0x42,
 } as const
